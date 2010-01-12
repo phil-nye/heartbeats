@@ -4,7 +4,7 @@
 
 Checking out the Heartbeats repository creates a working copy of it on your local machine.
 
- {{{svn checkout https://heartbeats.googlecode.com/svn/trunk/ heartbeats --username <Your User Name>}}}
+ {{{svn checkout https://heartbeats.googlecode.com/svn/trunk/ heartbeats --username <YourUserName>}}}
 
 More information available here: http://code.google.com/p/heartbeats/source/checkout
 
