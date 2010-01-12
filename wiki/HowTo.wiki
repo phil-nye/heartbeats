@@ -35,7 +35,7 @@ The typical work cycle looks like this:
     * svn resolved 
 
   * Commit your changes
-svn commit 
+    * svn commit 
 
 
 = Subversion: a compete guide =
