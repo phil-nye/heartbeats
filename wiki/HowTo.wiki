@@ -4,7 +4,7 @@
 
 Checking out the Heartbeats repository creates a working copy of it on your local machine.
 
- {{{svn co}}}
+ {{{svn checkout https://heartbeats.googlecode.com/svn/trunk/ heartbeats --username <Your User Name>}}}
 
 = Basic Work Cycle =
 
