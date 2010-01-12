@@ -4,7 +4,7 @@
 
 Checking out the Heartbeats repository creates a working copy of it on your local machine.
 
- svn co 
+ {{{svn co}}}
 
 = Basic Work Cycle =
 
@@ -39,4 +39,4 @@ svn commit
 
 
 = Subversion: a compete guide =
-Following this  URL you'll be redirected to the online home of Version Control with Subversion, a free book about Subversion, a new version control system designed to supplant CVS.
+Following this URL (http://svnbook.red-bean.com/index.en.html) you'll be redirected to the online home of Version Control with Subversion, a free book about Subversion, a new version control system designed to supplant CVS.
