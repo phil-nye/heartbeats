@@ -6,6 +6,8 @@ Checking out the Heartbeats repository creates a working copy of it on your loca
 
  {{{svn checkout https://heartbeats.googlecode.com/svn/trunk/ heartbeats --username <Your User Name>}}}
 
+More information available here: http://code.google.com/p/heartbeats/source/checkout
+
 = Basic Work Cycle =
 
 This section is inspired to the Version Control with Subversion  webpages
