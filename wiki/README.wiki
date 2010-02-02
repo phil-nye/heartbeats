@@ -9,6 +9,7 @@ Heartbeats official website:
 The latest release of Heartbeats is always available in two alternative formats from:
 
   heartbeatsapi-VX.Y.tar.gz
+
   heartbeatsapi-VX.Y.zip
 
 You can download the latest release of Heartbeats from:
@@ -45,9 +46,9 @@ The Application Heartbeats framework provides a simple, standardized way for app
   * You can download the latest release of Heartbeats from: 
   http://code.google.com/p/heartbeats/downloads/list
   * Once you have downloaded your copy of the Heartbeats framework you just have to unzip it:
-      unzip heartbeatsapi-VX.Y.zip
+      {{{unzip heartbeatsapi-VX.Y.zip}}}
   or:
-    tar -xzvf heartbeatsapi-VX.Y.tar.gz
+    {{{tar -xzvf heartbeatsapi-VX.Y.tar.gz}}}
   * At this point you are ready to start to use the Heartbeats framework. You can:
     # Take a look to the documentation (see "Documentation for Heartbeats")
     # Familiarize yourself with the Heartbeats API using our examples (see "Testing Heartbeats")
@@ -77,7 +78,7 @@ You can find both an HTML and Latex version of the documentation in the latest r
 
 If, for any reasons, you need to recreate the documentation by yourself, you just have to use the following command (use it from the root directory of the Heartbeats framework):
 
-  doxygen heartbeats_doc
+  {{{doxygen heartbeats_doc}}}
 
 
 ==Testing Heartbeats==
@@ -87,11 +88,11 @@ The latest release of the Heartbeats framework come with a set of available test
 You can run one of our two examples, using the following command (use it from the root 
 directory of the Heartbeats framework):
 
-  make bench-tp 
+  {{{make bench-tp }}}
 
 to use the throughput example, or
 
-  make bench-lat
+  {{{make bench-lat}}}
 
 to use the latency example
 
