@@ -1,4 +1,4 @@
-#summary Heartbeats How To
+#summary How to download the source files
 
 = Check out the Heartbeats repository =
 
