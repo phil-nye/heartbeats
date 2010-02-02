@@ -56,10 +56,15 @@ The Application Heartbeats framework provides a simple, standardized way for app
 ==Directory Organization==
 
 /
+
 |-doc/    -- Documentation
+
   |-html  -- Documentation in HTML format
+
   |-latex -- Documentation in latex format
+
 |-src/    -- Source files
+
 |-inc/    -- Header files
 
 
