@@ -18,10 +18,13 @@ TESTS = $(TEST_ROOTS:%=$(BINDIR)/%)
 OBJS = $(ROOTS:%=$(BINDIR)/%.o)
 TEST_OBJS = $(TEST_ROOTS:%=$(BINDIR)/%.o)
 
-all: $(BINDIR) $(SCRATCH) $(OUTPUT) $(BINS) $(TESTS)
+all: $(BINDIR) $(LIBDIR) $(SCRATCH) shared $(OUTPUT) $(BINS)
 
 $(BINDIR):
 	-mkdir -p $(BINDIR)
+
+$(LIBDIR):
+	-mkdir -p $(LIBDIR)
 
 $(SCRATCH):
 	-mkdir -p $(SCRATCH)
@@ -50,16 +53,23 @@ bench-tp:
 	$(MAKE) all DEFINES="-DSHARED"
 	./bin/tp 1000 "" > $(OUTPUT)/tp_shmem_based.out
 	cat $(OUTPUT)/tp_shmem_based.out
-	$(MAKE) clean
-	$(MAKE) all DEFINES="-DFILEBASED"
-	./bin/tp 1000 $(OUTPUT)/tp_file_based.log > $(OUTPUT)/tp_file_based.out
-	cat $(OUTPUT)/tp_file_based.out
+	#$(MAKE) clean
+	#$(MAKE) all DEFINES="-DFILEBASED"
+	#./bin/tp 1000 $(OUTPUT)/tp_file_based.log > $(OUTPUT)/tp_file_based.out
+	#cat $(OUTPUT)/tp_file_based.out
 
 bench-lat:
 	$(MAKE) clean
 	$(MAKE) all
 	ls $(SCRATCH) | $(BINDIR)/lat 1000 $(OUTPUT)/log > $(OUTPUT)/lat_shmem_based.out
 	cat $(OUTPUT)/lat_shmem_based.out
+
+#test:
+#	$(MAKE) clean
+#	$(MAKE) $(BINDIR) $(SCRATCH) $(OUTPUT) $(BINS) $(TESTS)
+
+# Heartbeat shared memory version
+shared: $(LIBDIR)/libhb-shared.a $(LIBDIR)/libhrm-shared.a
 
 $(LIBDIR)/libhb-shared.a: $(SRCDIR)/heartbeat-shared.c $(INCDIR)/heartbeat.h
 	$(MAKE) $(BINDIR)/heartbeat-shared.o
@@ -70,6 +80,9 @@ $(LIBDIR)/libhrm-shared.a: $(SRCDIR)/heart_rate_monitor-shared.c $(INCDIR)/heart
 	$(MAKE) $(BINDIR)/heart_rate_monitor-shared.o
 	ar r $(LIBDIR)/libhrm-shared.a $(BINDIR)/heart_rate_monitor-shared.o
 	ranlib $(LIBDIR)/libhrm-shared.a
+
+# Heartbeat file version
+filebased: $(LIBDIR)/libhb-file.a $(LIBDIR)/libhrm-file.a
 
 $(LIBDIR)/libhb-file.a: $(SRCDIR)/heartbeat-file.c $(INCDIR)/heartbeat.h
 	$(MAKE) $(BINDIR)/heartbeat-file.o
