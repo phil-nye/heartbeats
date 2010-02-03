@@ -5,6 +5,7 @@ DEFINES ?=
 #LDFLAGS = -lpthread -lrt -lhb-file -lhrm-file
 LDFLAGS = -lpthread -lrt -lhb-shared -lhrm-shared
 
+DOCDIR = doc
 BINDIR = bin
 LIBDIR = lib
 INCDIR = ./inc
@@ -100,3 +101,11 @@ clean:
 
 squeaky: clean
 	-rm -rf $(OUTPUT)
+
+# Documentation
+documentation: 
+	doxygen heartbeats_doc
+
+clean-documentation:
+	-rm -rf $(DOCDIR)/html/*
+	-rm -rf $(DOCDIR)/latex/*
