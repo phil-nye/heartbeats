@@ -80,6 +80,9 @@ If, for any reasons, you need to recreate the documentation by yourself, you jus
 
   {{{doxygen heartbeats_doc}}}
 
+Or, if you prefer, you can just use:
+
+  {{{make documentation}}}
 
 ==Testing Heartbeats==
 
