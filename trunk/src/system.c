@@ -69,7 +69,7 @@ int get_heartbeat_apps(int* apps) {
     /* Replace the child fork with a new process */
     //FIXME
     //if(execl("/bin/ls","/bin/ls","/scratch/etc/heartbeat/heartbeat-enabled-apps/",(char*) NULL) == -1){
-    if(execl("/bin/ls","/bin/ls","/data/oldcag/home/bits7/hank/heartbeats/",(char*) NULL) == -1){
+    if(execl("/bin/ls","/bin/ls",getenv("HEARTBEAT_ENABLED_DIR"),(char*) NULL) == -1){
       fprintf(stderr,"execl Error!");
       exit(1);
     }
@@ -89,6 +89,11 @@ int main(int argc, char** argv) {
   const int MAX = atoi(argv[1]);
 
   int apps[1024];
+
+   if(getenv("HEARTBEAT_ENABLED_DIR") == NULL) {
+     fprintf(stderr, "ERROR: need to define environment variable HEARTBEAT_ENABLED_DIR (see README)\n");
+     return 1;
+   }
 
   heart_data_t* records = (heart_data_t*) malloc(MAX*sizeof(heart_data_t));
   int last_tag = -1;
