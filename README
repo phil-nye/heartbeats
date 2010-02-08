@@ -34,6 +34,7 @@ The contents of this README file are:
   Getting Started
   Directory Organization
   Documentation for Heartbeats
+  Environment Variables for Heartbeats
   Testing Heartbeats
   Team Members
  
@@ -84,22 +85,35 @@ Directory Organization
 Documentation for Heartbeats
 ---------------------------------------
 
-The documentation for the Heartbeats framework has been created with Doxygen.
-You can find both an HTML and Latex version of the documentation in the latest release
-of the Heartbeats framework.
-If, for any reasons, you need to recreate the documentation by yourself, you just have
-to use the following command (use it from the root directory of the Heartbeats framework):
+The documentation for the Heartbeats framework has been created with
+Doxygen.  You can find both an HTML and Latex version of the
+documentation in the latest release of the Heartbeats framework.  If,
+for any reasons, you need to recreate the documentation by yourself,
+you just have to use the following command (use it from the root
+directory of the Heartbeats framework):
 
   doxygen heartbeats_doc
+
+
+
+Environment Variables for Heartbeats
+------------------------------------ 
+
+In the Heartbeats framework, Heartbeat-enabled applications signal
+their presence to the rest of the world by writing a file to a special
+directory.  Currently, this directory is specified by an environment
+variable: HEARTBEAT_ENABLED_DIR.  Before running the tests, users
+should define this variable to point to a directory in which they have
+read and write permissions. 
 
 
 Testing Heartbeats
 ---------------------------------------
 
-The latest release of the Heartbeats framework come with a set of available tests that
-can be used to familiarize yourself with this API.
-You can run one of our two examples, using the following command (use it from the root 
-directory of the Heartbeats framework):
+The latest release of the Heartbeats framework comes with a set of
+available tests that can be used to familiarize yourself with this
+API. You can run one of our two examples, using the following command
+(use it from the root directory of the Heartbeats framework):
 
   make bench-tp 
 

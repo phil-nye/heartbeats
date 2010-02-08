@@ -91,16 +91,18 @@ int heartbeat_init(heartbeat_t* hb,
   else 
     hb->text_file = NULL;
 
-  sprintf(hb->filename, "/data/oldcag/home/bits7/hank/heartbeats/%d", hb->state->pid);  
+  if(getenv("HEARTBEAT_ENABLED_DIR") == NULL)
+    return 1;
+
+  sprintf(hb->filename, "%s/%d", getenv("HEARTBEAT_ENABLED_DIR"), hb->state->pid);  
   
   hb->binary_file = fopen(hb->filename, "w");
   if ( hb->binary_file == NULL ) {
-    rc = 1;
+    return 1;
   }
   fclose(hb->binary_file);
   
   hb->log = HB_alloc_log(hb->state->pid, buffer_depth);
-  //hb->monitor_log = NULL;
 
   if(hb->log == NULL)
     rc = 2;

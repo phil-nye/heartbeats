@@ -16,8 +16,6 @@
 heartbeat_t heart;
 heart_rate_monitor_t hrm;
 
-#if 1
-
 /**
        * 
        * @param apps
@@ -65,7 +63,7 @@ int get_heartbeat_apps(int* apps) {
       /* Replace the child fork with a new process */
       //FIXME
       //if(execl("/bin/ls","/bin/ls","/scratch/etc/heartbeat/heartbeat-enabled-apps/",(char*) NULL) == -1){
-      if(execl("/bin/ls","/bin/ls","/data/oldcag/home/bits7/hank/heartbeats/",(char*) NULL) == -1){
+      if(execl("/bin/ls","/bin/ls",getenv("HEARTBEAT_ENABLED_DIR"),(char*) NULL) == -1){
          fprintf(stderr,"execl Error!");
          exit(1);
       }
@@ -96,11 +94,9 @@ void app(char* logname, int iters)
 
    // quiesce for a bit then synchronize
    usleep(1000000);
-   #ifdef FILEBASED
-      heartbeat(&heart);
-   #else
-      heartbeat(&heart, -2); 
-   #endif
+   
+   heartbeat(&heart, -2); 
+   
    int tag;
    do 
    {
@@ -116,21 +112,17 @@ void app(char* logname, int iters)
    for(i = iters; i > 0; i--) {
 
       // issue a heartbeat
-      #ifdef FILEBASED
-         heartbeat(&heart);
-      #else
-         heartbeat(&heart, i);
-      #endif
-
-      // wait for a heartbeat
-      do 
-      {
-	int rc = -1;
-	while (rc != 0)
-	  rc = hrm_get_current(&hrm, &record);
-	tag = record.tag;
-	//printf("app read tag %d and (iters-i) is %d\n", tag, (iters-i));
-      } while( tag != (iters - i) );
+     heartbeat(&heart, i);
+     
+     // wait for a heartbeat
+     do 
+       {
+	 int rc = -1;
+	 while (rc != 0)
+	   rc = hrm_get_current(&hrm, &record);
+	 tag = record.tag;
+	
+       } while( tag != (iters - i) );
    }  
       heartbeat_finish(&heart);
 
@@ -146,60 +138,49 @@ void sys(char* logname, int iters)
 {
   heartbeat_record_t record;
    // init heartbeats and a monitor
-   //printf("executing the sys code\n");
   heartbeat_init(&heart, 0, 1000000, 10, 100, NULL);
-   int apps[2];
-   while( get_heartbeat_apps(apps) != 2 );   
-   int pid = getpid();
-   if ( apps[0] == pid )
-      heart_rate_monitor_init(&hrm, apps[1]);
-   else
-      heart_rate_monitor_init(&hrm, apps[0]);
-
-   // quiesce for a bit then synchronize
-   usleep(1000000);
-   int tag;
-   do 
-   {
-     int rc = -1;
-     while (rc != 0)
-       rc = hrm_get_current(&hrm, &record);
+  int apps[2];
+  while( get_heartbeat_apps(apps) != 2 );   
+  int pid = getpid();
+  if ( apps[0] == pid )
+    heart_rate_monitor_init(&hrm, apps[1]);
+  else
+    heart_rate_monitor_init(&hrm, apps[0]);
+  
+  // quiesce for a bit then synchronize
+  usleep(1000000);
+  int tag;
+  do 
+    {
+      int rc = -1;
+      while (rc != 0)
+	rc = hrm_get_current(&hrm, &record);
       tag = record.tag;
-   } while( tag != -2 );
-   #ifdef FILEBASED
-      heartbeat(&heart);
-   #else
-      heartbeat(&heart, -1);   
-   #endif
-
-
-   // start timer
-   struct timespec time_info;
-   int64_t time1, time2;
+    } while( tag != -2 );
+  heartbeat(&heart, -1);   
+  
+  // start timer
+  struct timespec time_info;
+  int64_t time1, time2;
    clock_gettime( CLOCK_REALTIME, &time_info );
    time1 = ( (int64_t) time_info.tv_sec * 1000000000 + (int64_t) time_info.tv_nsec );
-
+   
    int i;
    for(i = 0; i < iters; i++) {
-
-      // wait for a heartbeat
-      do 
-      {
+     
+     // wait for a heartbeat
+     do 
+       {
 	 int rc = -1;
 	 while (rc != 0)
 	   rc = hrm_get_current(&hrm, &record);
-	tag = record.tag;
-        // printf("sys read tag %d and (iters-i) is %d\n", tag, (iters-i));
-      } while( tag != (iters - i) );
+	 tag = record.tag;
+       } while( tag != (iters - i) );
 
-      // issue a heartbeat
-      #ifdef FILEBASED
-         heartbeat(&heart);
-      #else
-         heartbeat(&heart, i);
-      #endif
+     // issue a heartbeat
+     heartbeat(&heart, i);
    }   
-
+   
    // end timer
    clock_gettime( CLOCK_REALTIME, &time_info );
    time2 = ( (int64_t) time_info.tv_sec * 1000000000 + (int64_t) time_info.tv_nsec );
@@ -211,7 +192,6 @@ void sys(char* logname, int iters)
    heartbeat_finish(&heart);
   
 }
-#endif
 
 /**
        * 
@@ -219,12 +199,15 @@ void sys(char* logname, int iters)
        * @param argv[2]: name of log file
        */
 int main(int argc, char** argv) {
-#if 1
    if ( argc != 3 )
    {
       printf("usage:\n");
       printf("  application num_beats, log_file\n");
       return -1;
+   }
+   if(getenv("HEARTBEAT_ENABLED_DIR") == NULL) {
+     fprintf(stderr, "ERROR: need to define environment variable HEARTBEAT_ENABLED_DIR (see README)\n");
+     return 1;
    }
 
    // fork a process. 
@@ -252,6 +235,5 @@ int main(int argc, char** argv) {
       // cleanup
       return 0;
    }
-#endif
    return 0;
 }

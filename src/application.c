@@ -28,6 +28,10 @@ int main(int argc, char** argv) {
       printf("  application num_beats, log_file, sleep_interval, buffer_depth\n");
       return -1;
    }
+   if(getenv("HEARTBEAT_ENABLED_DIR") == NULL) {
+     fprintf(stderr, "ERROR: need to define environment variable HEARTBEAT_ENABLED_DIR (see README)\n");
+     return 1;
+   }
 
    int i;
    int sleep = atoi(argv[3]);

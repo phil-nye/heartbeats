@@ -33,6 +33,6 @@ TODO List
 2) Add more information to the wiki on how to use the Heartbeats
 3) Add more examples to the Heartbeats snapshot (Heartbeats V1.1)
 4) Release the new version (V1.1) of the Heartbeats framework
-4) Work on a consensus object to manage multiple applications
+5) Work on a consensus object to manage multiple applications
 
 

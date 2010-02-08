@@ -10,11 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#ifdef FILEBASED
-   #include "heartbeat.h"
-#else
-   #include "heartbeat.h"
-#endif
+#include "heartbeat.h"
 
 heartbeat_t heart;
 
@@ -31,21 +27,20 @@ int main(int argc, char** argv) {
       printf("  application num_beats, log_file\n");
       return -1;
    }
+   if(getenv("HEARTBEAT_ENABLED_DIR") == NULL) {
+     fprintf(stderr, "ERROR: need to define environment variable HEARTBEAT_ENABLED_DIR (see README)\n");
+     return 1;
+   }
 
    int i;
    const int MAX = atoi(argv[1]);
 
       heartbeat_init(&heart, 0, 1000000, 100, 1000, NULL);
-   //      heartbeat_init(&heart, 0, 1000000, 10, 1000, argv[2]);
 
    usleep(1000);
 
    for(i = 0; i < MAX; i++) {
-      #ifdef FILEBASED
-         heartbeat(&heart);
-      #else
-         heartbeat(&heart, i);
-      #endif
+     heartbeat(&heart, i);
    }
 
    printf("Global heart rate: %f, Current heart rate: %f\n",
