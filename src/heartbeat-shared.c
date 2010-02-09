@@ -96,11 +96,6 @@ int heartbeat_init(heartbeat_t* hb,
 
   sprintf(hb->filename, "%s/%d", getenv("HEARTBEAT_ENABLED_DIR"), hb->state->pid);  
   
-  hb->binary_file = fopen(hb->filename, "w");
-  if ( hb->binary_file == NULL ) {
-    return 1;
-  }
-  fclose(hb->binary_file);
   
   hb->log = HB_alloc_log(hb->state->pid, buffer_depth);
 
@@ -120,6 +115,13 @@ int heartbeat_init(heartbeat_t* hb,
   pthread_mutex_init(&hb->mutex, NULL);
   hb->steady_state = 0;
   hb->state->valid = 0;
+
+  hb->binary_file = fopen(hb->filename, "w");
+  if ( hb->binary_file == NULL ) {
+    return 1;
+  }
+  fclose(hb->binary_file);
+
 
   return rc;
 }
