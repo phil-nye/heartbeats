@@ -108,7 +108,7 @@ int heartbeat_init(heartbeat_t* hb,
     rc = 2;
 
   hb->first_timestamp = hb->last_timestamp = -1;
-  hb->window_size = window_size;
+  hb->state->window_size = window_size;
   hb->window = (int64_t*) malloc(window_size*sizeof(int64_t));
   hb->current_index = 0;
   hb->state->min_heartrate = min_target;
@@ -255,7 +255,7 @@ static inline float hb_window_average(heartbeat_t volatile * hb,
     average_time = average_time / ((double) hb->current_index+1);
     hb->last_average_time = average_time;
     hb->current_index++;
-    if( hb->current_index == hb->window_size) {
+    if( hb->current_index == hb->state->window_size) {
       hb->current_index = 0;
       hb->steady_state = 1;
     }
@@ -263,15 +263,15 @@ static inline float hb_window_average(heartbeat_t volatile * hb,
   else {
     average_time = 
       hb->last_average_time - 
-      ((double) hb->window[hb->current_index]/ (double) hb->window_size);
-    average_time += (double) time /  (double) hb->window_size;
+      ((double) hb->window[hb->current_index]/ (double) hb->state->window_size);
+    average_time += (double) time /  (double) hb->state->window_size;
 
     hb->last_average_time = average_time;
 
     hb->window[hb->current_index] = time;
     hb->current_index++;
 
-    if( hb->current_index == hb->window_size)
+    if( hb->current_index == hb->state->window_size)
       hb->current_index = 0;
   }
   fps = (1.0 / (float) average_time)*1000000000;

@@ -39,7 +39,7 @@ typedef struct {
   int64_t last_timestamp;
 
   int64_t* window;
-  int64_t window_size;
+  //int64_t window_size;
   int64_t current_index;
   
   int steady_state;
